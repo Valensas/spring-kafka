@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.valensas"
-version = "0.0.3-SNAPSHOT"
+version = "0.0.4"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
@@ -67,7 +67,7 @@ centralPortal {
     password = System.getenv("SONATYPE_PASSWORD")
 
     pom {
-        group = System.getenv("LIBRARY_GROUP")?.takeUnless { it.isEmpty() } ?: "com.valensas"
+        group = System.getenv("LIBRARY_GROUP") ?: "com.valensas"
         name = "Valensas Kafka"
         description = "This library contains the minimum requirements set by Valensas for kafka libraries that use kafka producer or consumer."
         url = "https://valensas.com/"
