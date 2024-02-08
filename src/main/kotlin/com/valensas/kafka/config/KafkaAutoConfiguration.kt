@@ -2,9 +2,9 @@ package com.valensas.kafka.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.valensas.kafka.deserializer.KafkaModelDeserializer
+import io.github.stavshamir.springwolf.configuration.AsyncApiDocket
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.beans.factory.support.AbstractBeanFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
@@ -26,10 +26,9 @@ class KafkaAutoConfiguration {
     fun kafkaModelDeserializer(
         objectMapper: ObjectMapper,
         applicationContext: ApplicationContext,
-        @Value("\${springwolf:docket:base-package}")
-        basePackage: String
+        docket: AsyncApiDocket
     ): KafkaModelDeserializer {
-        val reflections = Reflections(basePackage, Scanners.MethodsAnnotated)
+        val reflections = Reflections(docket.basePackage, Scanners.MethodsAnnotated)
         val mapping =
             reflections
                 .getMethodsAnnotatedWith(KafkaListener::class.java)
