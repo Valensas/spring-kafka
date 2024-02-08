@@ -20,6 +20,18 @@ repositories {
 
 
 dependencies {
+    // Autoconfiguration
+    implementation("org.springframework.boot:spring-boot-autoconfigure")
+
+    // Reflection
+    implementation("org.reflections:reflections:0.10.2")
+
+    // Jackson
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    // Kafka
+    api("org.springframework.kafka:spring-kafka")
+
     // Kafka documentation support
     implementation("io.github.springwolf:springwolf-ui:0.18.0")
     implementation("io.github.springwolf:springwolf-asyncapi:0.18.0")
@@ -29,6 +41,7 @@ dependencies {
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
 }
 
 tasks.withType<KotlinCompile> {
