@@ -23,5 +23,5 @@ jobs:
           SIGNING_SECRETKEY: ${{ secrets.SIGNING_SECRETKEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          LIBRARY_GROUP: ${{ env.LIBRARY_GROUP }}
-          SIGNING_KEYID: ${{ env.SIGNING_KEYID }}
+          LIBRARY_GROUP: ${{ vars.LIBRARY_GROUP }}
+          SIGNING_KEYID: ${{ vars.SIGNING_KEYID }}
