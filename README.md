@@ -4,6 +4,8 @@ This library contains the minimum requirements set by Valensas for kafka librari
 
 These:
 - Produces a specification complying with the asyncapi standard via SpringWolf.
+- Adds org.springframework.kafka:spring-kafka dependency.
+- Adds kafka consumer deserializers for the input of methods containing the @KafkaListener annotation
 
 Supported Versions:
 The library is available for the following versions. It may also work for older versions, but it has not been tested.
