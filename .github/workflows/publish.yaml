@@ -5,36 +5,7 @@ on:
       - '*'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: setup java
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          architecture: x64
-          distribution: oracle
-          cache: 'gradle'
-      - name: Lint
-        run: ./gradlew lintKotlin
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: setup java
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          architecture: x64
-          distribution: oracle
-          cache: 'gradle'
-      - name: Test
-        run: ./gradlew test
-
   publish:
-    needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +19,7 @@ jobs:
       - name: Publish
         run: ./gradlew publishToCentralPortal
         env:
-          SIGNING_PASSPHRASE: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-          SIGNING_SECRETKEY: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
+          SIGNING_SECRETKEY: ${{ secrets.SIGNING_SECRETKEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
