@@ -6,25 +6,41 @@ on:
 
 jobs:
   lint:
-    runs-on: openjdk:21-slim
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run clippy
+      - uses: actions/checkout@v4
+      - name: setup java
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          architecture: x64
+          distribution: oracle
+      - name: Lint
         run: ./gradlew lintKotlin
 
   test:
-    runs-on: openjdk:21-slim
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run tests
+      - uses: actions/checkout@v4
+      - name: setup java
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          architecture: x64
+          distribution: oracle
+      - name: Test
         run: ./gradlew test
 
   publish:
     needs: [lint, test]
-    runs-on: openjdk:21-slim
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - name: setup java
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          architecture: x64
+          distribution: oracle
       - name: Publish
         run: ./gradlew publishToCentralPortal
