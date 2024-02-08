@@ -1,0 +1,30 @@
+name: Publish
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  lint:
+    runs-on: openjdk:21-slim
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run clippy
+        run: ./gradlew lintKotlin
+
+  test:
+    runs-on: openjdk:21-slim
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests
+        run: ./gradlew test
+
+  publish:
+    needs: [lint, test]
+    runs-on: openjdk:21-slim
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Publish
+        run: ./gradlew publishToCentralPortal
