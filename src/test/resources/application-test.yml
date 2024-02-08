@@ -1,0 +1,11 @@
+spring:
+  application.name: test
+  jackson.time-zone: Europe/Istanbul
+
+springwolf:
+  docket:
+    base-package: com.valensas
+    info:
+      title: ${spring.application.name}
+      version: 1.0.0
+    servers: {}

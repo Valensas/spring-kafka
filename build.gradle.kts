@@ -20,6 +20,15 @@ repositories {
 
 
 dependencies {
+    // Kafka documentation support
+    implementation("io.github.springwolf:springwolf-ui:0.18.0")
+    implementation("io.github.springwolf:springwolf-asyncapi:0.18.0")
+    implementation("io.github.springwolf:springwolf-kafka:0.18.0")
+    implementation("org.openfolder:kotlin-asyncapi-spring-web:3.0.3")
+
+    // Test
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
 }
 
 tasks.withType<KotlinCompile> {
