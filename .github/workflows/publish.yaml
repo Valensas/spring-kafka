@@ -15,6 +15,7 @@ jobs:
           java-version: "21"
           architecture: x64
           distribution: oracle
+          cache: 'gradle'
       - name: Lint
         run: ./gradlew lintKotlin
 
@@ -28,6 +29,7 @@ jobs:
           java-version: "21"
           architecture: x64
           distribution: oracle
+          cache: 'gradle'
       - name: Test
         run: ./gradlew test
 
@@ -42,5 +44,6 @@ jobs:
           java-version: "21"
           architecture: x64
           distribution: oracle
+          cache: 'gradle'
       - name: Publish
         run: ./gradlew publishToCentralPortal
