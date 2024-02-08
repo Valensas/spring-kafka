@@ -63,6 +63,9 @@ signing {
 }
 
 centralPortal {
+    username = System.getenv("SONATYPE_USERNAME")
+    password = System.getenv("SONATYPE_PASSWORD")
+
     pom {
         group = System.getenv("LIBRARY_GROUP")?.takeUnless { it.isEmpty() } ?: "com.valensas"
         name = "Valensas Kafka"

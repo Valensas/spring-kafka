@@ -47,3 +47,8 @@ jobs:
           cache: 'gradle'
       - name: Publish
         run: ./gradlew publishToCentralPortal
+        env:
+          SIGNING_PASSPHRASE: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          SIGNING_SECRETKEY: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
