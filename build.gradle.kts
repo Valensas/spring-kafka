@@ -84,7 +84,7 @@ centralPortal {
         developers {
             developer {
                 id.set("0")
-                name.set("Valensas Developer")
+                name.set("Valensas")
                 email.set("info@valensas.com")
             }
         }
