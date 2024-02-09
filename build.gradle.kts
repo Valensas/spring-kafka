@@ -67,7 +67,6 @@ centralPortal {
     password = System.getenv("SONATYPE_PASSWORD")
 
     pom {
-        group = System.getenv("LIBRARY_GROUP") ?: "com.valensas"
         name = "Valensas Kafka"
         description = "This library contains the minimum requirements set by Valensas for kafka libraries that use kafka producer or consumer."
         url = "https://valensas.com/"
