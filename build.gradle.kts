@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.valensas"
-version = "0.0.5"
+version = "0.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
