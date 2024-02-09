@@ -4,10 +4,9 @@ plugins {
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.4"
     id("org.jmailen.kotlinter") version "4.2.0"
-    id("maven-publish")
-    id("java-library")
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
+    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.1.1"
 }
 
 group = "com.valensas"
@@ -53,4 +52,41 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+signing {
+    val keyId = System.getenv("SIGNING_KEYID")
+    val secretKey = System.getenv("SIGNING_SECRETKEY")
+    val passphrase = System.getenv("SIGNING_PASSPHRASE")
+
+    useInMemoryPgpKeys(keyId, secretKey, passphrase)
+}
+
+centralPortal {
+    username = System.getenv("SONATYPE_USERNAME")
+    password = System.getenv("SONATYPE_PASSWORD")
+
+    pom {
+        name = "Valensas Kafka"
+        description = "This library contains the minimum requirements set by Valensas for kafka libraries that use kafka producer or consumer."
+        url = "https://valensas.com/"
+        scm {
+            url = "https://github.com/Valensas/spring-kafka"
+        }
+
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("0")
+                name.set("Valensas")
+                email.set("info@valensas.com")
+            }
+        }
+    }
 }
