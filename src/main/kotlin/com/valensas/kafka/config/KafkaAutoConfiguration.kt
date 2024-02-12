@@ -2,7 +2,6 @@ package com.valensas.kafka.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.valensas.kafka.deserializer.KafkaModelDeserializer
-import io.github.stavshamir.springwolf.configuration.AsyncApiDocket
 import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
