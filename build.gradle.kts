@@ -1,16 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.2.2"
+    id("org.springframework.boot") version "3.2.5"
     id("io.spring.dependency-management") version "1.1.4"
-    id("org.jmailen.kotlinter") version "4.2.0"
+	id("com.github.ben-manes.versions") version "0.51.0"
+    id("org.jmailen.kotlinter") version "4.3.0"
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
-    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.1.1"
+	id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.3"
 }
 
 group = "com.valensas"
-version = "0.1.0"
+version = "0.2.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -35,9 +36,9 @@ dependencies {
     api("org.springframework.kafka:spring-kafka")
 
     // Kafka documentation support
-    implementation("io.github.springwolf:springwolf-ui:0.18.0")
-    implementation("io.github.springwolf:springwolf-asyncapi:0.18.0")
-    implementation("io.github.springwolf:springwolf-kafka:0.18.0")
+    implementation("io.github.springwolf:springwolf-ui:1.1.0")
+    implementation("io.github.springwolf:springwolf-asyncapi:1.1.0")
+    implementation("io.github.springwolf:springwolf-kafka:1.1.0")
     implementation("org.openfolder:kotlin-asyncapi-spring-web:3.0.3")
 
     // Test
