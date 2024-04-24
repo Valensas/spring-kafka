@@ -2,7 +2,7 @@ package com.valensas.kafka.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.valensas.kafka.deserializer.KafkaModelDeserializer
-import io.github.stavshamir.springwolf.configuration.properties.SpringwolfConfigProperties
+import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.springframework.beans.factory.support.AbstractBeanFactory
@@ -48,7 +48,7 @@ class KafkaAutoConfiguration {
         properties: KafkaProperties
     ): ProducerFactory<String, *> {
         val factory = DefaultKafkaProducerFactory<String, Any>(properties.buildProducerProperties(null))
-        factory.setValueSerializer(JsonSerializer(objectMapper))
+        factory.valueSerializer = JsonSerializer(objectMapper)
         return factory
     }
 

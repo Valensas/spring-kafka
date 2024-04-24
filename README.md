@@ -11,9 +11,9 @@ Supported Versions:
 The library is available for the following versions. It may also work for older versions, but it has not been tested.
 
 | Dependency | Condition | Version |
-| ------ | ------ |------ |
-| Spring Boot | >= | 3.2.2 |
-| Java | = | 21 |
+| ------ |-----------|---------|
+| Spring Boot | >=        | 3.2.5   |
+| Java | >=        | 17      |
 
 
 Configuration:
