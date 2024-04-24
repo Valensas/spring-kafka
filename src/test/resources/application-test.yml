@@ -8,4 +8,7 @@ springwolf:
     info:
       title: ${spring.application.name}
       version: 1.0.0
-    servers: {}
+    servers:
+      kafka:
+        protocol: kafka
+        host: "localhost:9092"
