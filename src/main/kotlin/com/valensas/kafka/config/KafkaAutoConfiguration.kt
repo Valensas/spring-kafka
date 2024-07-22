@@ -2,7 +2,11 @@ package com.valensas.kafka.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.valensas.kafka.deserializer.KafkaModelDeserializer
+import com.valensas.kafka.interceptor.KafkaHeaderPropagationConsumerInterceptor
+import com.valensas.kafka.interceptor.KafkaHeaderPropagationProducerInterceptor
+import com.valensas.kafka.properties.HeaderPropagationProperties
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties
+import org.apache.kafka.clients.producer.ProducerConfig
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.springframework.beans.factory.support.AbstractBeanFactory
@@ -35,7 +39,9 @@ class KafkaAutoConfiguration {
                 .map {
                     val topics =
                         it.getAnnotation(KafkaListener::class.java).topics.mapNotNull {
-                            (applicationContext.autowireCapableBeanFactory as AbstractBeanFactory).resolveEmbeddedValue(it)
+                            (applicationContext.autowireCapableBeanFactory as AbstractBeanFactory).resolveEmbeddedValue(
+                                it
+                            )
                         }
                     topics.map { topic -> topic to it.parameterTypes.firstOrNull() }
                 }.flatten().toMap()
@@ -47,7 +53,10 @@ class KafkaAutoConfiguration {
         objectMapper: ObjectMapper,
         properties: KafkaProperties
     ): ProducerFactory<String, *> {
-        val factory = DefaultKafkaProducerFactory<String, Any>(properties.buildProducerProperties(null))
+        val producerProperties = properties.buildProducerProperties(null)
+        producerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
+            KafkaHeaderPropagationProducerInterceptor::class.java.getName()
+        val factory = DefaultKafkaProducerFactory<String, Any>(producerProperties)
         factory.valueSerializer = JsonSerializer(objectMapper)
         return factory
     }
@@ -56,9 +65,14 @@ class KafkaAutoConfiguration {
     @ConditionalOnProperty("spring.kafka.consumer.enabled", havingValue = "true")
     fun consumerFactory(
         deserializer: KafkaModelDeserializer,
-        properties: KafkaProperties
+        properties: KafkaProperties,
+        headerPropagationProperties: HeaderPropagationProperties
     ): ConsumerFactory<*, *> {
-        val factory = DefaultKafkaConsumerFactory<Any, Any>(properties.buildConsumerProperties(null))
+        val consumerProperties = properties.buildConsumerProperties(null)
+        consumerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
+            KafkaHeaderPropagationConsumerInterceptor::class.java.getName()
+        consumerProperties["headerPropagationProperties"] = headerPropagationProperties
+        val factory = DefaultKafkaConsumerFactory<Any, Any>(consumerProperties)
         factory.setValueDeserializer(deserializer)
         return factory
     }
