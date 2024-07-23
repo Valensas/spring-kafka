@@ -22,7 +22,7 @@ class KafkaHeaderPropagationConsumerInterceptor<K, V> : ConsumerInterceptor<K, V
                 headers.forEach(
                     Consumer { header: Header ->
                         if (headerPropagationProperties.headers.contains(header.key())) {
-                            headerMap[header.key()] = String(header.value())
+                            headerMap[header.key()] = header.value().toString(Charsets.UTF_8)
                         }
                     }
                 )
