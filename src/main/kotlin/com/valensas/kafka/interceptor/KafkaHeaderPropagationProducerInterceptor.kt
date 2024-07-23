@@ -8,7 +8,7 @@ import java.lang.Exception
 
 class KafkaHeaderPropagationProducerInterceptor<K, V> : ProducerInterceptor<K, V> {
     override fun onSend(record: ProducerRecord<K, V>): ProducerRecord<K, V> {
-        ThreadLocalHeaderStore.headers.forEach { (key: String?, value: String) ->
+        ThreadLocalHeaderStore.headers.forEach { (key: String, value: String) ->
             record.headers().add(key, value.toByteArray(Charsets.UTF_8))
         }
         return record
