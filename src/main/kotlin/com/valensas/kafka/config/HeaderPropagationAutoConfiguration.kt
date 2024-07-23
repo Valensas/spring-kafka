@@ -27,8 +27,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class HeaderPropagationAutoConfiguration : WebMvcConfigurer {
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    fun headerPropagationFilter(headerPropagationProperties: HeaderPropagationProperties?): OncePerRequestFilter {
-        return WebHeaderExtractorFilter(headerPropagationProperties!!)
+    fun headerPropagationFilter(headerPropagationProperties: HeaderPropagationProperties): OncePerRequestFilter {
+        return WebHeaderExtractorFilter(headerPropagationProperties)
     }
 
     @Bean
