@@ -35,12 +35,12 @@ class HeaderPropagationAutoConfiguration : WebMvcConfigurer {
     fun restTemplate(headerPropagationProperties: HeaderPropagationProperties): RestTemplate {
         val restTemplate = RestTemplate()
         restTemplate.interceptors.add(
-            ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray?, execution: ClientHttpRequestExecution ->
+            ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
                 ThreadLocalHeaderStore.headers.forEach {
                     request.headers[it.key] = listOf(it.value)
                 }
                 ThreadLocalHeaderStore.clear()
-                execution.execute(request, body!!)
+                execution.execute(request, body)
             }
         )
         return restTemplate
