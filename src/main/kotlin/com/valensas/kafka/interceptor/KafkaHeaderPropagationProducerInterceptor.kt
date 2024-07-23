@@ -1,6 +1,5 @@
 package com.valensas.kafka.interceptor
 
-
 import com.valensas.kafka.config.ThreadLocalHeaderStore
 import org.apache.kafka.clients.producer.ProducerInterceptor
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -21,6 +20,9 @@ class KafkaHeaderPropagationProducerInterceptor<K, V> : ProducerInterceptor<K, V
     override fun close() {
     }
 
-    override fun onAcknowledgement(p0: RecordMetadata?, p1: Exception?) {
+    override fun onAcknowledgement(
+        p0: RecordMetadata?,
+        p1: Exception?
+    ) {
     }
 }

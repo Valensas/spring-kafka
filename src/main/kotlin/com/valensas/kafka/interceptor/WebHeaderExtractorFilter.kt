@@ -12,7 +12,6 @@ import java.io.IOException
 class WebHeaderExtractorFilter(
     private val headerPropagationProperties: HeaderPropagationProperties
 ) : OncePerRequestFilter() {
-
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -31,5 +30,4 @@ class WebHeaderExtractorFilter(
 
         filterChain.doFilter(request, response)
     }
-
 }

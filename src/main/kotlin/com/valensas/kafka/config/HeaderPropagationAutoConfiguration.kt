@@ -1,5 +1,6 @@
 package com.valensas.kafka.config
 
+import com.valensas.kafka.interceptor.FeignHeaderPropagationInterceptor
 import com.valensas.kafka.interceptor.WebHeaderExtractorFilter
 import com.valensas.kafka.properties.HeaderPropagationProperties
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -24,8 +25,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
     matchIfMissing = true
 )
 class HeaderPropagationAutoConfiguration : WebMvcConfigurer {
-
-
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     fun headerPropagationFilter(headerPropagationProperties: HeaderPropagationProperties?): OncePerRequestFilter {
@@ -35,13 +34,20 @@ class HeaderPropagationAutoConfiguration : WebMvcConfigurer {
     @Bean
     fun restTemplate(headerPropagationProperties: HeaderPropagationProperties): RestTemplate {
         val restTemplate = RestTemplate()
-        restTemplate.interceptors.add(ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray?, execution: ClientHttpRequestExecution ->
-            ThreadLocalHeaderStore.headers.forEach {
-                request.headers[it.key] = listOf(it.value)
+        restTemplate.interceptors.add(
+            ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray?, execution: ClientHttpRequestExecution ->
+                ThreadLocalHeaderStore.headers.forEach {
+                    request.headers[it.key] = listOf(it.value)
+                }
+                ThreadLocalHeaderStore.clear()
+                execution.execute(request, body!!)
             }
-            ThreadLocalHeaderStore.clear()
-            execution.execute(request, body!!)
-        })
+        )
         return restTemplate
+    }
+
+    @Bean
+    fun feignHeaderPropagationInterceptor(): FeignHeaderPropagationInterceptor {
+        return FeignHeaderPropagationInterceptor()
     }
 }
