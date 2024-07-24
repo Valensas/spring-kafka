@@ -39,9 +39,7 @@ class KafkaAutoConfiguration {
                 .map {
                     val topics =
                         it.getAnnotation(KafkaListener::class.java).topics.mapNotNull {
-                            (applicationContext.autowireCapableBeanFactory as AbstractBeanFactory).resolveEmbeddedValue(
-                                it
-                            )
+                            (applicationContext.autowireCapableBeanFactory as AbstractBeanFactory).resolveEmbeddedValue(it)
                         }
                     topics.map { topic -> topic to it.parameterTypes.firstOrNull() }
                 }.flatten().toMap()
