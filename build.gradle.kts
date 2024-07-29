@@ -7,12 +7,11 @@ plugins {
     id("org.jmailen.kotlinter") version "4.3.0"
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
-    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.3"
     id("maven-publish")
 }
 
 group = "com.valensas"
-version = "0.2.1"
+version = "0.2.1-lcl2"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -26,9 +25,9 @@ tasks.getByName<Jar>("jar") {
 
 dependencies {
 
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
+    compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
 
     // Autoconfiguration
     implementation("org.springframework.boot:spring-boot-autoconfigure")
@@ -69,43 +68,6 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-        }
-    }
-}
-
-signing {
-    val keyId = System.getenv("SIGNING_KEYID")
-    val secretKey = System.getenv("SIGNING_SECRETKEY")
-    val passphrase = System.getenv("SIGNING_PASSPHRASE")
-
-    useInMemoryPgpKeys(keyId, secretKey, passphrase)
-}
-
-centralPortal {
-    username = System.getenv("SONATYPE_USERNAME")
-    password = System.getenv("SONATYPE_PASSWORD")
-
-    pom {
-        name = "Valensas Kafka"
-        description = "This library contains the minimum requirements set by Valensas for kafka libraries that use kafka producer or consumer."
-        url = "https://valensas.com/"
-        scm {
-            url = "https://github.com/Valensas/spring-kafka"
-        }
-
-        licenses {
-            license {
-                name.set("The Apache License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-            }
-        }
-
-        developers {
-            developer {
-                id.set("0")
-                name.set("Valensas")
-                email.set("info@valensas.com")
-            }
         }
     }
 }
