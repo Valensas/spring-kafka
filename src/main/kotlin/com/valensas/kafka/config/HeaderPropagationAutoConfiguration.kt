@@ -4,6 +4,7 @@ import com.valensas.kafka.interceptor.WebHeaderExtractorFilter
 import com.valensas.kafka.properties.HeaderPropagationProperties
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.boot.web.client.RestTemplateCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -31,17 +32,17 @@ class HeaderPropagationAutoConfiguration : WebMvcConfigurer {
     }
 
     @Bean
-    fun restTemplate(headerPropagationProperties: HeaderPropagationProperties): RestTemplate {
-        val restTemplate = RestTemplate()
-        restTemplate.interceptors.add(
-            ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
-                ThreadLocalHeaderStore.headers.forEach {
-                    request.headers[it.key] = listOf(it.value)
+    fun restTemplateCustomizer(): RestTemplateCustomizer {
+        return RestTemplateCustomizer { restTemplate: RestTemplate ->
+            restTemplate.interceptors.add(
+                ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
+                    ThreadLocalHeaderStore.headers.forEach {
+                        request.headers[it.key] = listOf(it.value)
+                    }
+                    ThreadLocalHeaderStore.clear()
+                    execution.execute(request, body)
                 }
-                ThreadLocalHeaderStore.clear()
-                execution.execute(request, body)
-            }
-        )
-        return restTemplate
+            )
+        }
     }
 }
