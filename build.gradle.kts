@@ -8,14 +8,16 @@ plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
     id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.3"
+    id("maven-publish")
 }
 
 group = "com.valensas"
-version = "0.2.0"
+version = "0.2.1"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 tasks.getByName<Jar>("jar") {
@@ -23,6 +25,11 @@ tasks.getByName<Jar>("jar") {
 }
 
 dependencies {
+
+    compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
+
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
+
     // Autoconfiguration
     implementation("org.springframework.boot:spring-boot-autoconfigure")
 
@@ -56,6 +63,14 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
 }
 
 signing {

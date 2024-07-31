@@ -1,1 +1,2 @@
 com.valensas.kafka.config.KafkaAutoConfiguration
+com.valensas.kafka.config.HeaderPropagationAutoConfiguration
