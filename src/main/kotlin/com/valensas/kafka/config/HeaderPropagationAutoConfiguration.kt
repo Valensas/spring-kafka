@@ -32,7 +32,7 @@ class HeaderPropagationAutoConfiguration : WebMvcConfigurer {
     }
 
     @Bean
-    fun restTemplateCustomizer(): RestTemplateCustomizer {
+    fun restTemplateHeaderPropagationCustomizer(): RestTemplateCustomizer {
         return RestTemplateCustomizer { restTemplate: RestTemplate ->
             restTemplate.interceptors.add(
                 ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
