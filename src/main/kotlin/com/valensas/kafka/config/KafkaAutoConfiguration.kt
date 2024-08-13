@@ -51,7 +51,6 @@ class KafkaAutoConfiguration {
         objectMapper: ObjectMapper,
         properties: KafkaProperties
     ): ProducerFactory<String, *> {
-        println("INTERCEPTORS: $interceptors")
         val producerProperties = properties.buildProducerProperties(null)
         producerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
             interceptors.joinToString { it::class.java.getName() }
@@ -68,7 +67,6 @@ class KafkaAutoConfiguration {
         properties: KafkaProperties,
         applicationContext: ApplicationContext
     ): ConsumerFactory<*, *> {
-        println("INTERCEPTORS: $interceptors")
         val consumerProperties = properties.buildConsumerProperties(null)
         consumerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
             interceptors.joinToString { it::class.java.getName() }
