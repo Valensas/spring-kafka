@@ -47,13 +47,13 @@ class KafkaAutoConfiguration {
 
     @Bean
     fun producerFactory(
-        interceptors: List<ProducerInterceptor<Any, Any>>,
+        interceptors: List<ProducerInterceptorClassHolder>,
         objectMapper: ObjectMapper,
         properties: KafkaProperties
     ): ProducerFactory<String, *> {
         val producerProperties = properties.buildProducerProperties(null)
         producerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
-            interceptors.joinToString { it::class.java.getName() }
+            interceptors.joinToString { it.producerInterceptorClass.getName() }
         val factory = DefaultKafkaProducerFactory<String, Any>(producerProperties)
         factory.valueSerializer = JsonSerializer(objectMapper)
         return factory
@@ -62,14 +62,14 @@ class KafkaAutoConfiguration {
     @Bean
     @ConditionalOnProperty("spring.kafka.consumer.enabled", havingValue = "true")
     fun consumerFactory(
-        interceptors: List<ConsumerInterceptor<Any, Any>>,
+        interceptors: List<ConsumerInterceptorClassHolder>,
         deserializer: KafkaModelDeserializer,
         properties: KafkaProperties,
         applicationContext: ApplicationContext
     ): ConsumerFactory<*, *> {
         val consumerProperties = properties.buildConsumerProperties(null)
         consumerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
-            interceptors.joinToString { it::class.java.getName() }
+            interceptors.joinToString { it.consumerInterceptorClass.getName() }
         consumerProperties["applicationContext"] = applicationContext
         val factory = DefaultKafkaConsumerFactory<Any, Any>(consumerProperties)
         factory.setValueDeserializer(deserializer)
