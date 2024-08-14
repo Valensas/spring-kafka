@@ -3,9 +3,7 @@ package com.valensas.kafka.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.valensas.kafka.deserializer.KafkaModelDeserializer
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties
-import org.apache.kafka.clients.consumer.ConsumerInterceptor
 import org.apache.kafka.clients.producer.ProducerConfig
-import org.apache.kafka.clients.producer.ProducerInterceptor
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.springframework.beans.factory.support.AbstractBeanFactory
