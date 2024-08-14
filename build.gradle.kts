@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.valensas"
-version = "0.2.2"
+version = "0.3.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -25,11 +25,6 @@ tasks.getByName<Jar>("jar") {
 }
 
 dependencies {
-
-    compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
-
-    compileOnly("org.springframework.boot:spring-boot-starter-web")
-
     // Autoconfiguration
     implementation("org.springframework.boot:spring-boot-autoconfigure")
 
@@ -109,3 +104,4 @@ centralPortal {
         }
     }
 }
+

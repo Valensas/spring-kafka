@@ -2,9 +2,6 @@ package com.valensas.kafka.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.valensas.kafka.deserializer.KafkaModelDeserializer
-import com.valensas.kafka.interceptor.KafkaHeaderPropagationConsumerInterceptor
-import com.valensas.kafka.interceptor.KafkaHeaderPropagationProducerInterceptor
-import com.valensas.kafka.properties.HeaderPropagationProperties
 import io.github.springwolf.core.configuration.properties.SpringwolfConfigProperties
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.reflections.Reflections
@@ -48,12 +45,13 @@ class KafkaAutoConfiguration {
 
     @Bean
     fun producerFactory(
+        interceptors: List<ProducerInterceptorClassHolder>,
         objectMapper: ObjectMapper,
         properties: KafkaProperties
     ): ProducerFactory<String, *> {
         val producerProperties = properties.buildProducerProperties(null)
         producerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
-            KafkaHeaderPropagationProducerInterceptor::class.java.getName()
+            interceptors.joinToString { it.producerInterceptorClass.getName() }
         val factory = DefaultKafkaProducerFactory<String, Any>(producerProperties)
         factory.valueSerializer = JsonSerializer(objectMapper)
         return factory
@@ -62,14 +60,15 @@ class KafkaAutoConfiguration {
     @Bean
     @ConditionalOnProperty("spring.kafka.consumer.enabled", havingValue = "true")
     fun consumerFactory(
+        interceptors: List<ConsumerInterceptorClassHolder>,
         deserializer: KafkaModelDeserializer,
         properties: KafkaProperties,
-        headerPropagationProperties: HeaderPropagationProperties
+        applicationContext: ApplicationContext
     ): ConsumerFactory<*, *> {
         val consumerProperties = properties.buildConsumerProperties(null)
         consumerProperties[ProducerConfig.INTERCEPTOR_CLASSES_CONFIG] =
-            KafkaHeaderPropagationConsumerInterceptor::class.java.getName()
-        consumerProperties["headerPropagationProperties"] = headerPropagationProperties
+            interceptors.joinToString { it.consumerInterceptorClass.getName() }
+        consumerProperties["applicationContext"] = applicationContext
         val factory = DefaultKafkaConsumerFactory<Any, Any>(consumerProperties)
         factory.setValueDeserializer(deserializer)
         return factory
